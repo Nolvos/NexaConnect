@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!--
+    Favicon: the Logo.tsx glyph on a pine tile. Strokes and nodes are scaled up
+    relative to the wordmark version so the shape still reads at 16px.
+    Colours: pine.deep #0E2A1D, signal #3FA679 - see tailwind.config.ts.
+  -->
+  <rect width="64" height="64" rx="14" fill="#0E2A1D" />
+  <g stroke="#3FA679" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M13 45 L32 19 L51 45" />
+    <path d="M13 45 L51 45" stroke-opacity="0.4" />
+  </g>
+  <circle cx="32" cy="19" r="7" fill="#3FA679" />
+  <circle cx="13" cy="45" r="5.75" fill="#3FA679" fill-opacity="0.75" />
+  <circle cx="51" cy="45" r="5.75" fill="#3FA679" fill-opacity="0.75" />
+</svg>

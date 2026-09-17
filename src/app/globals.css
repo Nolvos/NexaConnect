@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --nav-h: 4.5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Anchor links on the PBX page must not land under the sticky navbar. */
+    scroll-padding-top: calc(var(--nav-h) + 1.5rem);
+  }
+
+  body {
+    @apply bg-paper font-body text-ink antialiased;
+    font-size: 1rem;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-semibold text-pine;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One focus treatment everywhere, visible on both paper and pine surfaces. */
+  :focus-visible {
+    outline: 2px solid theme('colors.signal.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: theme('colors.signal.DEFAULT');
+    color: theme('colors.paper');
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8;
+  }
+
+  /* Small uppercase eyebrow above section headings. */
+  .eyebrow {
+    @apply font-mono text-[0.6875rem] uppercase tracking-label text-signal-deep;
+  }
+
+  .eyebrow-on-dark {
+    @apply font-mono text-[0.6875rem] uppercase tracking-label text-signal;
+  }
+
+  /* Hairline grid used behind dark sections - echoes the signal motif quietly. */
+  .pine-grid {
+    background-image: linear-gradient(theme('colors.line.dark') 1px, transparent 1px),
+      linear-gradient(90deg, theme('colors.line.dark') 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 75%);
+  }
+}
+
+/*
+ * Reduced motion: kill every non-essential animation site-wide. Framer Motion
+ * components additionally check useReducedMotion() so they render their final
+ * state rather than an interrupted one.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
