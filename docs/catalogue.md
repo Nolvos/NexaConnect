@@ -11,7 +11,7 @@ To add an offering:
 1. Choose its existing category and a unique lowercase, hyphenated slug.
 2. Supply its name, brand (or `Brand to be selected`), product type, summary, overview, key facts, specification rows, use cases and filterable requirements.
 3. Use consistent `productType` and `features` values; these populate filters. Camera tiers must use `Budget-friendly`, `Business` or `Premium`. Do not apply a camera tier to unrelated accessories just to fill a filter.
-4. Add the slug to the relevant `photoGroups` set or supply its own approved `image`. Every published enquiry guide should have a local image, with alt text identifying it as illustrative. Do not imply that a generic image depicts an exact model. See `docs/generated-images.md` for the current assets and prompts.
+4. Add a unique local image to `productPhotos` or supply its own approved `image`. Every published enquiry guide should have descriptive alt text identifying generic imagery as illustrative. Do not imply that a generic image depicts an exact model. See `docs/generated-images.md` for the current assets and prompts.
 5. Check the page, filters and quote link before publishing.
 
 For an approved, specific model, use `kind: 'model'` and provide `model`, a non-empty `sources` array of official manufacturer URLs with `checkedOn` dates, `specificationScope`, and `configurationNote`. The scope must be `Model-supported options` or `Quoted configuration`. Do not combine mutually exclusive vendor options as if they are installed in a single server. Obtain business approval of the offered inventory and verify every model-specific claim, warranty and compatibility detail. Keep unpublished drafts out of the public `products` array.

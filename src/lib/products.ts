@@ -98,18 +98,42 @@ export function productIcon(product: Product): IconName {
   return productIcons[product.slug] ?? getProductCategory(product.category)?.icon ?? 'Box';
 }
 
-const photoGroups: Array<{ slugs: string[]; src: string; alt: string }> = [
-  { slugs: ['business-routers', 'managed-switches', 'unmanaged-switches', 'poe-switches'], src: '/catalogue/network-switches.png', alt: 'Illustrative image of a generic router and network switches in a rack' },
-  { slugs: ['indoor-access-points', 'outdoor-access-points'], src: '/catalogue/wireless-access-points.png', alt: 'Illustrative image of generic indoor and outdoor wireless access points' },
-  { slugs: ['network-cabling', 'network-transceivers', 'network-racks'], src: '/catalogue/network-accessories.png', alt: 'Illustrative image of network cabling, transceivers and rack equipment' },
-  { slugs: ['dell-rack-servers', 'dell-tower-servers', 'hpe-rack-servers', 'hpe-tower-servers'], src: '/catalogue/rack-tower-servers.png', alt: 'Illustrative image of unbranded rack and tower servers, not a specific Dell or HPE model' },
-  { slugs: ['server-memory', 'server-storage'], src: '/catalogue/server-upgrades.png', alt: 'Illustrative image of server memory, storage drives and an open server chassis' },
-  { slugs: ['budget-ip-cameras', 'business-dome-cameras', 'business-bullet-cameras', 'premium-ptz-cameras', 'premium-fixed-cameras'], src: '/catalogue/security-cameras.png', alt: 'Illustrative image of generic dome, bullet, fixed and PTZ security cameras' },
-  { slugs: ['network-video-recorders', 'digital-video-recorders', 'surveillance-storage', 'camera-accessories'], src: '/catalogue/surveillance-recording.png', alt: 'Illustrative image of a surveillance recorder, storage drives and camera cabling' },
-  { slugs: ['computer-ram', 'solid-state-drives', 'hard-disk-drives', 'processors', 'motherboards'], src: '/catalogue/computer-components.png', alt: 'Illustrative image of computer memory, drives, processor and motherboard' },
-  { slugs: ['graphics-cards', 'power-supplies', 'computer-cooling', 'cases-and-accessories'], src: '/catalogue/computer-build.png', alt: 'Illustrative image of a graphics card, power supply, cooling fans and computer case' },
-];
-const productPhotos = new Map(photoGroups.flatMap(({ slugs, src, alt }) => slugs.map((slug) => [slug, { src, alt }] as const)));
+/** Each published enquiry guide has its own image; category cards and solutions use separate files. */
+const productPhotos = new Map<string, { src: string; alt: string }>([
+  ['business-routers', { src: '/catalogue/business-routers.png', alt: 'Illustrative image of a generic small-office wired router with Ethernet cables' }],
+  ['managed-switches', { src: '/catalogue/managed-switches.png', alt: 'Illustrative image of a generic managed rack switch and fibre uplinks' }],
+  ['unmanaged-switches', { src: '/catalogue/unmanaged-switches.png', alt: 'Illustrative image of a compact unmanaged desktop Ethernet switch' }],
+  ['poe-switches', { src: '/catalogue/poe-switches.png', alt: 'Illustrative image of a generic PoE switch with camera and access-point connections' }],
+  ['indoor-access-points', { src: '/catalogue/wireless-access-points.png', alt: 'Illustrative image of generic indoor wireless access points in a business setting' }],
+  ['outdoor-access-points', { src: '/catalogue/outdoor-access-points.png', alt: 'Illustrative image of a generic outdoor wireless access point on a building wall' }],
+  ['network-cabling', { src: '/catalogue/network-accessories.png', alt: 'Illustrative image of network cabling and patch accessories in a wiring closet' }],
+  ['network-transceivers', { src: '/catalogue/network-transceivers.png', alt: 'Illustrative image of generic fibre transceiver modules and a fibre patch cable' }],
+  ['network-racks', { src: '/catalogue/network-racks.png', alt: 'Illustrative image of a populated network cabinet in a communications room' }],
+  ['dell-rack-servers', { src: '/catalogue/dell-rack-servers.png', alt: 'Illustrative image of a generic unbranded rack server, not a specific Dell model' }],
+  ['dell-tower-servers', { src: '/catalogue/dell-tower-servers.png', alt: 'Illustrative image of a generic unbranded tower server, not a specific Dell model' }],
+  ['hpe-rack-servers', { src: '/catalogue/hpe-rack-servers.png', alt: 'Illustrative image of generic unbranded rack servers, not specific HPE models' }],
+  ['hpe-tower-servers', { src: '/catalogue/hpe-tower-servers.png', alt: 'Illustrative image of a generic unbranded open tower server, not a specific HPE model' }],
+  ['server-memory', { src: '/catalogue/server-upgrades.png', alt: 'Illustrative image of server memory modules and an open server chassis' }],
+  ['server-storage', { src: '/catalogue/server-storage.png', alt: 'Illustrative image of server drive carriers beside an open rack chassis' }],
+  ['budget-ip-cameras', { src: '/catalogue/budget-ip-cameras.png', alt: 'Illustrative image of a compact generic IP camera at a small shop entrance' }],
+  ['business-dome-cameras', { src: '/catalogue/business-dome-cameras.png', alt: 'Illustrative image of a generic dome security camera in a business reception' }],
+  ['business-bullet-cameras', { src: '/catalogue/business-bullet-cameras.png', alt: 'Illustrative image of a generic outdoor bullet security camera at an entrance' }],
+  ['premium-ptz-cameras', { src: '/catalogue/premium-ptz-cameras.png', alt: 'Illustrative image of a generic PTZ camera overlooking a commercial site' }],
+  ['premium-fixed-cameras', { src: '/catalogue/premium-fixed-cameras.png', alt: 'Illustrative image of a generic fixed camera in a low-light business lobby' }],
+  ['network-video-recorders', { src: '/catalogue/surveillance-recording.png', alt: 'Illustrative image of a generic network recorder with surveillance storage and camera views' }],
+  ['digital-video-recorders', { src: '/catalogue/digital-video-recorders.png', alt: 'Illustrative image of a generic digital video recorder with analogue camera cables' }],
+  ['surveillance-storage', { src: '/catalogue/surveillance-storage.png', alt: 'Illustrative image of hard drives and a recording system for surveillance storage' }],
+  ['camera-accessories', { src: '/catalogue/camera-accessories.png', alt: 'Illustrative image of camera brackets, junction box, cables and a PoE injector' }],
+  ['computer-ram', { src: '/catalogue/computer-ram.png', alt: 'Illustrative image of unbranded desktop and laptop RAM modules' }],
+  ['solid-state-drives', { src: '/catalogue/solid-state-drives.png', alt: 'Illustrative image of generic M.2 and 2.5-inch solid-state drives' }],
+  ['hard-disk-drives', { src: '/catalogue/hard-disk-drives.png', alt: 'Illustrative image of generic hard disk drives on a technician bench' }],
+  ['processors', { src: '/catalogue/processors.png', alt: 'Illustrative image of a generic processor beside an open motherboard socket' }],
+  ['motherboards', { src: '/catalogue/motherboards.png', alt: 'Illustrative image of an unbranded computer motherboard with socket and expansion slots' }],
+  ['graphics-cards', { src: '/catalogue/graphics-cards.png', alt: 'Illustrative image of an unbranded graphics card on a workbench' }],
+  ['power-supplies', { src: '/catalogue/power-supplies.png', alt: 'Illustrative image of a generic modular computer power supply and cables' }],
+  ['computer-cooling', { src: '/catalogue/computer-cooling.png', alt: 'Illustrative image of a computer CPU cooler and case fans' }],
+  ['cases-and-accessories', { src: '/catalogue/computer-build.png', alt: 'Illustrative image of a generic computer case with related build components' }],
+]);
 
 const selectionBrand = 'Brand to be selected';
 const rows = (items: Array<[string, string]>): ProductSpecification[] =>

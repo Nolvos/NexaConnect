@@ -7,6 +7,7 @@
  * HTTP checks are GET-only and restricted to a local development server.
  */
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
@@ -157,6 +158,16 @@ function checkSolutions(data, enquiry) {
   console.log(`Solutions: ${solutions.length} offerings, source records, legacy status and naming follow-up passed.`);
 }
 
+function checkImageUniqueness(categories, products, solutions) {
+  const images = [...categories, ...products, ...solutions].map((entry) => entry.image.src);
+  unique(images, 'Category, product and solution image paths');
+  const hashes = images.map((src) => crypto.createHash('sha256')
+    .update(fs.readFileSync(path.join(root, 'public', src.replace(/^\//, ''))))
+    .digest('hex'));
+  unique(hashes, 'Category, product and solution image contents');
+  console.log(`Images: ${images.length} distinct category, product and solution visuals passed.`);
+}
+
 async function checkContact(data, solutions, enquiry) {
   const app = modules({ NODE_ENV: 'test', RESEND_API_KEY: 'verification-only-fake-key' });
   const { POST } = app.load('src/app/api/contact/route.ts');
@@ -272,6 +283,7 @@ async function main() {
   checkCatalogue(data);
   checkEnquirySelections(data, enquiry);
   checkSolutions(enterprise, enquiry);
+  checkImageUniqueness(data.productCategories, data.products, enterprise.solutions);
   await checkContact(data, enterprise.solutions, enquiry);
   const routes = ['/', '/about', '/contact', '/portfolio', '/products', '/solutions', ...services.map((service) => service.href),
     ...data.productCategories.map((category) => category.href), ...data.products.map(data.productHref),
