@@ -28,7 +28,7 @@ export default function ServiceCard({ href, title, blurb, icon, image, className
         className,
       )}
     >
-      {image && <div className="-mx-6 -mt-6 mb-5 border-b border-line"><CataloguePhoto src={image.src} alt={image.alt} icon={icon} /></div>}
+      {image && <div className="-mx-6 -mt-6 mb-5 border-b border-line"><CataloguePhoto src={image.src} alt={image.alt} /></div>}
       {!image && <span className="flex h-11 w-11 items-center justify-center rounded-control bg-mist transition-colors duration-300 ease-out group-hover:bg-signal/12">
         <Icon
           name={icon}

@@ -76,7 +76,7 @@ export default function ProductDetailPage({ params }: Props) {
 
           <aside className="overflow-hidden rounded-card border border-line bg-white" aria-label="Quotation details">
             <div className="relative flex h-52 items-center justify-center border-b border-line bg-mist">
-              {product.image ? <div className="w-full"><CataloguePhoto src={product.image.src} alt={product.image.alt} icon={productIcon(product)} large /></div> : <div className="w-full"><TopicArtwork icon={productIcon(product)} label={product.productType} brand={product.brand === 'Brand to be selected' ? undefined : product.brand} large /></div>}
+              {product.image ? <div className="w-full"><CataloguePhoto src={product.image.src} alt={product.image.alt} large /></div> : <div className="w-full"><TopicArtwork icon={productIcon(product)} label={product.productType} brand={product.brand === 'Brand to be selected' ? undefined : product.brand} large /></div>}
             </div>
             {product.image?.attribution && <p className="px-6 pt-4 text-xs text-ink-soft">{product.image.attributionUrl ? <a href={product.image.attributionUrl} target="_blank" rel="noopener noreferrer" className="underline">{product.image.attribution}</a> : product.image.attribution}</p>}
             <div className="p-6 sm:p-8">

@@ -44,7 +44,7 @@ export default function SolutionPage({ params }: PageProps) {
             <CheckList items={solution.capabilities} className="mt-4" />
           </div>
           <aside className="self-start rounded-card border border-line bg-mist p-6" aria-label="Lifecycle and scope">
-            <div className="-mx-6 -mt-6 mb-6 overflow-hidden rounded-t-card border-b border-line"><CataloguePhoto src={solution.image.src} alt={solution.image.alt} icon={solution.icon} /></div>
+            <div className="-mx-6 -mt-6 mb-6 overflow-hidden rounded-t-card border-b border-line"><CataloguePhoto src={solution.image.src} alt={solution.image.alt} /></div>
             <Icon name={solution.lifecycle.legacy ? 'RefreshCw' : 'ClipboardList'} className="text-signal-deep" size={26} />
             <h2 className="mt-4 text-lg">{solution.lifecycle.label}</h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">{solution.lifecycle.detail}</p>

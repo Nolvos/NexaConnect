@@ -12,7 +12,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <article className="flex h-full flex-col overflow-hidden rounded-card border border-line bg-white">
       <div className="relative border-b border-line">
         {product.image ? (
-          <CataloguePhoto src={product.image.src} alt={product.image.alt} icon={productIcon(product)} />
+          <CataloguePhoto src={product.image.src} alt={product.image.alt} />
         ) : (
           <TopicArtwork icon={productIcon(product)} label={product.productType} brand={product.brand === 'Brand to be selected' ? undefined : product.brand} />
         )}

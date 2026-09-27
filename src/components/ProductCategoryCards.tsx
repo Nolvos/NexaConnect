@@ -9,7 +9,7 @@ export default function ProductCategoryCards() {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {productCategories.map((category) => (
         <Link key={category.slug} href={category.href} className="group overflow-hidden rounded-card border border-line bg-white transition-colors hover:border-signal">
-          <CataloguePhoto src={category.image.src} alt={category.image.alt} icon={category.icon} />
+          <CataloguePhoto src={category.image.src} alt={category.image.alt} />
           <div className="p-6">
             <h3 className="text-xl">{category.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">{category.description}</p>

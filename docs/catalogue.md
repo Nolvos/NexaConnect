@@ -11,7 +11,7 @@ To add an offering:
 1. Choose its existing category and a unique lowercase, hyphenated slug.
 2. Supply its name, brand (or `Brand to be selected`), product type, summary, overview, key facts, specification rows, use cases and filterable requirements.
 3. Use consistent `productType` and `features` values; these populate filters. Camera tiers must use `Budget-friendly`, `Business` or `Premium`. Do not apply a camera tier to unrelated accessories just to fill a filter.
-4. Add the slug to the relevant `photoGroups` set or supply its own approved `image`; choose a relevant `productIcons` entry for the icon badge. Every published enquiry guide should have a local image, with alt text identifying it as illustrative. Do not imply that a generic image depicts an exact model. See `docs/generated-images.md` for the current assets and prompts.
+4. Add the slug to the relevant `photoGroups` set or supply its own approved `image`. Every published enquiry guide should have a local image, with alt text identifying it as illustrative. Do not imply that a generic image depicts an exact model. See `docs/generated-images.md` for the current assets and prompts.
 5. Check the page, filters and quote link before publishing.
 
 For an approved, specific model, use `kind: 'model'` and provide `model`, a non-empty `sources` array of official manufacturer URLs with `checkedOn` dates, `specificationScope`, and `configurationNote`. The scope must be `Model-supported options` or `Quoted configuration`. Do not combine mutually exclusive vendor options as if they are installed in a single server. Obtain business approval of the offered inventory and verify every model-specific claim, warranty and compatibility detail. Keep unpublished drafts out of the public `products` array.
@@ -20,7 +20,7 @@ For an approved, specific model, use `kind: 'model'` and provide `model`, a non-
 
 Edit `src/lib/solutions.ts`. Each item receives `/solutions/{slug}` and a sitemap entry. Keep the overview, capabilities, use cases, integration considerations and service scope specific to the offering. Source entries retain official URLs and the date reviewed; recheck lifecycle and compatibility when updating content.
 
-Choose an `icon` and a local `image` that identify the solution topic. Solution cards and detail pages show the image with an icon badge. Do not replace these with official vendor logo artwork unless Nexa Connect has permission to use it. The imagery does not imply a partnership or certification.
+Choose an `icon` and a local `image` that identify the solution topic. Solution cards and detail pages show the image without overlays. Do not replace these with official vendor logo artwork unless Nexa Connect has permission to use it. The imagery does not imply a partnership or certification.
 
 - Avaya CM, System Manager and AES need release and entitlement checks for the customer's environment.
 - ACR is officially **Avaya Contact Recorder**. It is presented as legacy, with assessment and migration work rather than an unsupported promise of manufacturer support.

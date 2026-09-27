@@ -8,13 +8,10 @@ export default function SolutionCard({ solution }: { solution: EnterpriseSolutio
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-card border border-line bg-white shadow-card">
       <div className="relative border-b border-line">
-        <CataloguePhoto src={solution.image.src} alt={solution.image.alt} icon={solution.icon} />
-        {solution.lifecycle.legacy && (
-          <span className="absolute right-4 top-4 rounded-full border border-line bg-white px-3 py-1 font-mono text-[0.6875rem] text-pine">Legacy</span>
-        )}
+        <CataloguePhoto src={solution.image.src} alt={solution.image.alt} />
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <p className="eyebrow">Solution · {solution.family}</p>
+        <p className="eyebrow">Solution · {solution.family}{solution.lifecycle.legacy && ' · Legacy'}</p>
         <h3 className="mt-2 text-lg">
           <Link href={`/solutions/${solution.slug}`} className="underline-offset-4 hover:underline">{solution.shortName}</Link>
         </h3>
