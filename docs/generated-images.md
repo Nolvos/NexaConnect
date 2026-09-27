@@ -15,11 +15,8 @@ The prompt set used a shared direction: **realistic commercial/editorial technol
 | `surveillance-recording.png` | Generic recorder, storage drives and camera cabling with abstract camera views. |
 | `computer-components.png` | RAM, SSD, HDD, processor and motherboard on an anti-static workbench. |
 | `computer-build.png` | Graphics card, power supply, cooling fans and computer case. |
-| `enterprise-telephony.png` | Unbranded desk IP phones, communications rack and abstract call-operations screens. |
-| `workforce-analytics.png` | Abstract staffing schedules, forecast and performance charts on contact-centre screens. |
-| `call-accounting.png` | Unbranded desk phone and abstract call-cost reporting charts. |
 
-The additional 32 images use the same style and constraints, with these distinct subjects:
+The additional 28 product images use the same style and constraints, with these distinct subjects:
 
 | Asset | Prompt subject |
 | --- | --- |
@@ -51,9 +48,17 @@ The additional 32 images use the same style and constraints, with these distinct
 | `graphics-cards.png` | A large unbranded graphics card with fans and display outputs on a clean workstation build bench, three-quarter product view. |
 | `power-supplies.png` | An unbranded modular computer power supply with neatly arranged cables and connectors on a neutral studio work surface. |
 | `computer-cooling.png` | A computer CPU air cooler with heat pipes and fan beside two case fans in an open desktop case, clean detailed hardware photography. |
-| `avaya-system-manager.png` | An enterprise communications administrator workspace with rack equipment and a generic abstract management dashboard on a monitor, no readable UI or branding. |
-| `avaya-aes.png` | A generic enterprise telephony integration scene: desk IP phone, server appliance, neat network patch cables and an abstract application integration diagram on a monitor; no readable UI. |
-| `avaya-contact-recorder.png` | A legacy business call recording archive workspace: unbranded desk phone, storage server and abstract audio waveform on a monitor, no readable UI. |
-| `verint-wfo.png` | A contact-centre quality and performance review workspace with headset, abstract call waveform and coaching charts on a monitor, distinct from staffing schedule imagery, no readable UI. |
 
-`src/lib/products.ts` maps each product enquiry guide to a distinct image. `src/lib/solutions.ts` selects a distinct image for each enterprise offering. Four original assets (`network-switches`, `rack-tower-servers`, `security-cameras` and `computer-components`) appear only on category cards; the other eight appear on applicable guides or solutions. Keep alt text descriptive and identify generic visuals as illustrative in alt text, without adding a visible image caption. Replace a generic image with an exact product photo only after inventory, manufacturer rights and model identity have been verified.
+The seven solution images use deliberately different compositions so they are easy to distinguish in the Solutions and Portfolio galleries:
+
+| Asset | Prompt subject |
+| --- | --- |
+| `solution-cm-v2.png` | Close view of one generic enterprise desk phone and a patch panel; no monitor. |
+| `solution-smgr-v2.png` | Server racks and a freestanding abstract management terminal; no phone or desk close-up. |
+| `solution-aes-v2.png` | Overhead view of a generic communications gateway, interface cards and patch leads. |
+| `solution-acr-v2.png` | Generic recording appliance, removable storage trays and archived drives. |
+| `solution-wfm-v2.png` | Overhead workforce planning schedule, clock, headset and tablet; no charts or waveform. |
+| `solution-wfo-v2.png` | Headset, tablet with abstract audio quality review and a notebook. |
+| `solution-billing-v2.png` | Overhead desk phone, calculator, reports and filing folders. |
+
+`src/lib/products.ts` maps each product enquiry guide to a distinct image. `src/lib/solutions.ts` selects a distinct image for each enterprise offering. Four original assets (`network-switches`, `rack-tower-servers`, `security-cameras` and `computer-components`) appear only on category cards; the other five original assets appear on product guides. Keep alt text descriptive and identify generic visuals as illustrative in alt text, without adding a visible image caption. Replace a generic image with an exact product photo only after inventory, manufacturer rights and model identity have been verified.
