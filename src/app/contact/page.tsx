@@ -5,20 +5,24 @@ import Icon from '@/components/Icon';
 import PageHero from '@/components/PageHero';
 import Reveal from '@/components/Reveal';
 import { contact } from '@/lib/site';
+import { resolveEnquiry } from '@/lib/enquiry';
 
 export const metadata: Metadata = {
   title: 'Contact',
   description:
-    'Tell us what you need: PBX, support, software or web. Phone, email, WhatsApp, or send an enquiry and we will come back to you.',
+    'Request hardware pricing or discuss enterprise communications, workforce solutions, PBX, support, software and web projects.',
+  alternates: { canonical: '/contact' },
 };
 
-export default function ContactPage() {
+export default function ContactPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
+  const single = (key: string) => typeof searchParams[key] === 'string' ? searchParams[key] as string : undefined;
+  const context = resolveEnquiry({ category: single('category'), product: single('product'), solution: single('solution') });
   return (
     <>
       <PageHero
         eyebrow="Contact"
-        title="Tell us what's not working"
-        lead="Describe your setup and what it's costing you. We'll come back with an approach and a number, and say so if we're not the right fit."
+        title={context ? 'Let’s scope your requirements' : 'Tell us what you need'}
+        lead="Planning a hardware purchase, a new system or an upgrade? Share your requirements and we’ll help define the right specification and next steps."
       />
 
       <section className="bg-paper py-20 sm:py-28">
@@ -26,7 +30,7 @@ export default function ContactPage() {
           {/* ---------------- Form ---------------- */}
           <Reveal>
             <h2 className="sr-only">Enquiry form</h2>
-            <ContactForm />
+            <ContactForm key={JSON.stringify(context?.selection ?? {})} initialContext={context} />
           </Reveal>
 
           {/* ---------------- Details ---------------- */}

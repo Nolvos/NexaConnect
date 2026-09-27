@@ -11,9 +11,9 @@ import type { IconName } from '@/components/Icon';
 
 export const site = {
   name: 'Nexa Connect',
-  tagline: 'Business communication and software, connected end to end.',
+  tagline: 'Hardware, business communication and software, connected end to end.',
   description:
-    'Nexa Connect designs, deploys and maintains business phone systems, networks and custom software. One provider across your whole stack.',
+    'Explore networking, servers, surveillance and computer hardware alongside enterprise communications, workforce solutions and custom software from Nexa Connect.',
   /* TODO: replace with the production domain before deploying. */
   url: 'https://nexaconnect.vercel.com',
 } as const;
@@ -63,6 +63,8 @@ export const services: Service[] = [
 export const primaryNav = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services/pbx', children: services },
+  { label: 'Products', href: '/products' },
+  { label: 'Solutions', href: '/solutions' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
@@ -93,5 +95,7 @@ export const contact = {
 
 export const serviceOptions = [
   ...services.map((s) => ({ value: s.slug, label: s.title })),
+  { value: 'products', label: 'Hardware & product quotations' },
+  { value: 'enterprise', label: 'Enterprise solutions' },
   { value: 'other', label: 'Something else' },
 ];

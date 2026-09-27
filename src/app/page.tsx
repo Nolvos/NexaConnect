@@ -1,4 +1,5 @@
 import CTABand from '@/components/CTABand';
+import Button from '@/components/Button';
 import HomeHero from '@/components/HomeHero';
 import Icon from '@/components/Icon';
 import Reveal from '@/components/Reveal';
@@ -8,6 +9,7 @@ import ServiceConnector from '@/components/ServiceConnector';
 import StatCounter from '@/components/StatCounter';
 import { services } from '@/lib/site';
 import type { IconName } from '@/components/Icon';
+import { productCategories } from '@/lib/products';
 
 const valueProps: Array<{ icon: IconName; title: string; body: string }> = [
   {
@@ -36,6 +38,39 @@ export default function HomePage() {
   return (
     <>
       <HomeHero />
+
+      <section className="border-b border-line bg-mist py-20 sm:py-28">
+        <div className="container-page">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <SectionHeading eyebrow="Hardware for your next move" title="Build on the right equipment" lead="From a single upgrade to a complete site, explore the hardware and specifications that fit your requirements." />
+            <Button href="/products" variant="outline" icon="ArrowRight" className="shrink-0 self-start sm:self-auto">Explore products</Button>
+          </div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {productCategories.map((category) => <ServiceCard key={category.slug} href={category.href} title={category.title} blurb={category.description} icon={category.icon} image={category.image} />)}
+          </div>
+          <p className="mt-6 text-sm text-ink-soft">Tell us your quantity, requirements and timeline. Model selection, availability and pricing are confirmed with your quotation.</p>
+        </div>
+      </section>
+
+      <section className="bg-pine-deep py-16 sm:py-20">
+        <div className="container-page grid gap-9 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+          <div>
+            <p className="eyebrow-on-dark">Enterprise solutions</p>
+            <h2 className="mt-3 text-3xl text-paper sm:text-4xl">Connect the systems behind every conversation</h2>
+            <p className="mt-5 max-w-prose text-paper/70">Explore Avaya enterprise communications, Verint workforce solutions and call accounting. Plan integrations, upgrades and support around your current environment.</p>
+          </div>
+          <div className="space-y-6 lg:pl-8">
+            <ul className="space-y-3 text-paper">
+              {([
+                { name: 'Avaya CM, System Manager, AES & legacy ACR', icon: 'PhoneCall' },
+                { name: 'Verint WFM & Workforce Optimization', icon: 'CalendarClock' },
+                { name: 'Call accounting & RingMaster requirements', icon: 'FileChartColumn' },
+              ] as const).map((item) => <li key={item.name} className="flex items-center gap-3 border-b border-line-dark pb-3"><Icon name={item.icon} className="shrink-0 text-signal" size={20} />{item.name}</li>)}
+            </ul>
+            <Button href="/solutions" variant="accent" icon="ArrowRight">Explore solutions</Button>
+          </div>
+        </div>
+      </section>
 
       {/* ---------------- Services ---------------- */}
       <section className="bg-paper py-20 sm:py-28">

@@ -2,8 +2,10 @@ import Link from 'next/link';
 
 import Icon from '@/components/Icon';
 import { contact, services, site } from '@/lib/site';
+import { productCategories } from '@/lib/products';
 
 const company = [
+  { label: 'Enterprise solutions', href: '/solutions' },
   { label: 'About', href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Contact', href: '/contact' },
@@ -43,6 +45,10 @@ export default function Footer() {
           <p className="mt-2 max-w-xs text-[0.9375rem] leading-relaxed text-paper/70">
             {site.tagline}
           </p>
+          <h2 className="eyebrow-on-dark mt-7"><FooterLink href="/products">Products</FooterLink></h2>
+          <ul className="mt-2">
+            {productCategories.map((category) => <li key={category.slug}><FooterLink href={category.href}>{category.title}</FooterLink></li>)}
+          </ul>
         </div>
 
         <div>
@@ -83,7 +89,7 @@ export default function Footer() {
             <li>
               <a
                 href={`mailto:${contact.email}`}
-                className="inline-flex items-center gap-2.5 py-1 transition-colors hover:text-signal"
+                className="inline-flex max-w-full items-center gap-2.5 break-all py-1 transition-colors hover:text-signal"
               >
                 <Icon name="Mail" size={16} className="text-signal" />
                 {contact.email}
@@ -108,6 +114,7 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
+          <FooterLink href="/image-credits">Image credits</FooterLink>
           <p className="font-mono text-[0.75rem]">{contact.emergencyNote}</p>
         </div>
       </div>

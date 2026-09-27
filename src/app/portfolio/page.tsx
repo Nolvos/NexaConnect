@@ -1,14 +1,19 @@
 import type { Metadata } from 'next';
 
 import CTABand from '@/components/CTABand';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import Button from '@/components/Button';
 import PageHero from '@/components/PageHero';
 import PortfolioGrid from '@/components/PortfolioGrid';
+import SectionHeading from '@/components/SectionHeading';
 import { projects } from '@/lib/projects';
+import { solutions } from '@/lib/solutions';
 
 export const metadata: Metadata = {
   title: 'Portfolio',
   description:
-    'Phone system rollouts, support contracts, custom software and websites. Work across all four Nexa Connect services.',
+    'Explore the Nexa Connect project portfolio and enterprise solution capabilities across Avaya, Verint and call accounting.',
+  alternates: { canonical: '/portfolio' },
 };
 
 export default function PortfolioPage() {
@@ -16,36 +21,19 @@ export default function PortfolioPage() {
     <>
       <PageHero
         eyebrow="Portfolio"
-        title="Work across all four services"
-        lead="Avaya, Mitel, Zoom Phone and Genesys deployments, support contracts, custom software and websites. Clients are described by sector; references are available on request."
+        title="Projects and enterprise capabilities"
+        lead="Browse project examples and enterprise solutions together. Each card is labelled so you can distinguish delivered work from a capability we can discuss for your environment."
       />
 
-      <section className="bg-paper py-20 sm:py-28">
-        <div className="container-page">
-          <PortfolioGrid projects={projects} />
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Portfolio' }]} />
 
-          {/* Required by the CC BY 4.0 licence of the Avaya photo. */}
-          <p className="mt-12 text-[0.75rem] leading-relaxed text-ink-soft">
-            Avaya J159 photo:{' '}
-            <a
-              href="https://commons.wikimedia.org/wiki/File:Avaya_IX_J159_VoIP_phone_at_a_Publix_supermarket.jpg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline decoration-line underline-offset-2 hover:text-pine"
-            >
-              Nielsoncaetanosalmeron
-            </a>
-            ,{' '}
-            <a
-              href="https://creativecommons.org/licenses/by/4.0/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline decoration-line underline-offset-2 hover:text-pine"
-            >
-              CC BY 4.0
-            </a>
-            , cropped.
-          </p>
+      <section className="bg-mist py-16 sm:py-20">
+        <div className="container-page">
+          <SectionHeading eyebrow="Nexa Connect portfolio" title="Work and expertise, one view" lead="Filter the gallery to explore delivered projects or solution capabilities. Project examples describe work by sector; solution cards describe services available for discussion." className="mb-10" />
+          <PortfolioGrid projects={projects} solutions={solutions} />
+          <div className="mt-10 border-t border-line pt-8">
+            <Button href="/solutions" variant="outline" icon="ArrowRight">Explore solution details</Button>
+          </div>
         </div>
       </section>
 

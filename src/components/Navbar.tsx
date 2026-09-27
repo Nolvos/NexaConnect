@@ -10,14 +10,10 @@ import Icon from '@/components/Icon';
 import Logo from '@/components/Logo';
 import { EASE_OUT, MICRO } from '@/lib/motion';
 import { cn } from '@/lib/cn';
-import { contact, services } from '@/lib/site';
+import { contact, primaryNav, services } from '@/lib/site';
 
-const links = [
-  { label: 'Home', href: '/' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-];
+const links = primaryNav.filter((item) => item.label !== 'Services');
+const isActive = (pathname: string, href: string) => pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
 
 /** Underline that grows from the left instead of the colour snapping. */
 function Underline({ active }: { active: boolean }) {
@@ -88,7 +84,7 @@ export default function Navbar() {
         {/* ---------------- Desktop ---------------- */}
         <div
           className={cn(
-            'hidden items-center gap-8 md:flex',
+            'hidden items-center gap-5 xl:flex',
             solid ? 'text-ink' : 'text-paper',
           )}
         >
@@ -178,10 +174,11 @@ export default function Navbar() {
             <Link
               key={l.href}
               href={l.href}
+              aria-current={isActive(pathname, l.href) ? 'page' : undefined}
               className="group relative font-display text-[0.9375rem] font-medium transition-colors hover:text-signal-deep"
             >
               {l.label}
-              <Underline active={pathname === l.href} />
+              <Underline active={isActive(pathname, l.href)} />
             </Link>
           ))}
 
@@ -199,7 +196,7 @@ export default function Navbar() {
           aria-controls="mobile-menu"
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           className={cn(
-            '-mr-2 flex h-11 w-11 items-center justify-center rounded-button transition-colors md:hidden',
+            '-mr-2 flex h-11 w-11 items-center justify-center rounded-button transition-colors xl:hidden',
             solid ? 'text-pine' : 'text-paper',
           )}
         >
@@ -218,7 +215,7 @@ export default function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ duration: MICRO }}
               onClick={() => setMobileOpen(false)}
-              className="fixed inset-0 top-[var(--nav-h)] z-40 bg-pine-deep/50 md:hidden"
+              className="fixed inset-0 top-[var(--nav-h)] z-40 bg-pine-deep/50 xl:hidden"
             />
             <motion.div
               key="panel"
@@ -227,7 +224,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.32, ease: EASE_OUT }}
-              className="fixed bottom-0 right-0 top-[var(--nav-h)] z-40 flex w-[min(20rem,85vw)] flex-col overflow-y-auto border-l border-line bg-paper px-5 py-6 md:hidden"
+              className="fixed bottom-0 right-0 top-[var(--nav-h)] z-40 flex w-[min(20rem,85vw)] flex-col overflow-y-auto border-l border-line bg-paper px-5 py-6 xl:hidden"
             >
               <p className="eyebrow mb-3">Services</p>
               <ul className="mb-6 space-y-1">
@@ -247,15 +244,16 @@ export default function Navbar() {
                 ))}
               </ul>
 
-              <p className="eyebrow mb-3">Company</p>
+              <p className="eyebrow mb-3">Explore Nexa Connect</p>
               <ul className="space-y-1">
                 {links.map((l) => (
                   <li key={l.href}>
                     <Link
                       href={l.href}
+                      aria-current={isActive(pathname, l.href) ? 'page' : undefined}
                       className={cn(
                         'flex min-h-[44px] items-center rounded-control px-3 py-2.5 font-display text-[0.9375rem] text-pine transition-colors',
-                        pathname === l.href ? 'bg-mist' : 'hover:bg-mist',
+                        isActive(pathname, l.href) ? 'bg-mist' : 'hover:bg-mist',
                       )}
                     >
                       {l.label}

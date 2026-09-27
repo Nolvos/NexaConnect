@@ -13,6 +13,7 @@ export interface Project {
   seed: string;
   image: string;
   imageAlt: string;
+  imageCredit?: { author: string; sourceUrl: string; licence: string; licenceUrl: string; note?: string };
   /** CSS object-position for the crop, e.g. '50% 15%' to keep the top of a portrait photo. */
   imagePosition?: string;
 }
@@ -25,9 +26,15 @@ export const projects: Project[] = [
     category: 'pbx',
     categoryLabel: 'PBX solutions · Avaya',
     seed: 'nexa-pbx-1',
-    // Cropped from a CC BY 4.0 Wikimedia Commons photo - credited on /portfolio.
     image: '/portfolio/avaya-j159-ip-phone.jpg',
     imageAlt: 'Avaya J159 IP desk phone',
+    imageCredit: {
+      author: 'Nielsoncaetanosalmeron',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Avaya_IX_J159_VoIP_phone_at_a_Publix_supermarket.jpg',
+      licence: 'CC BY 4.0',
+      licenceUrl: 'https://creativecommons.org/licenses/by/4.0/',
+      note: 'cropped',
+    },
   },
   {
     title: 'Mitel MiVoice Business rollout for a Dubai hotel',

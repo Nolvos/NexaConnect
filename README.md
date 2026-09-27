@@ -20,6 +20,14 @@ Then open http://localhost:3000.
 
 Other scripts: `npm run build`, `npm run start`, `npm run lint`.
 
+## Products and enterprise solutions
+
+Hardware enquiries now cover networking, Dell/HPE servers, cameras and surveillance, and computer components at `/products`. The catalogue offers searchable requirements and detail pages, without inventing stocked models or prices. `/solutions` expands the portfolio with Avaya Enterprise, Verint WFM/WFO and call accounting offerings. Quote links prefill the contact form and preserve the selected offering in the submitted enquiry.
+
+See [the catalogue maintenance guide](docs/catalogue.md) for adding products, verifying model specifications, maintaining solution sources and lifecycle information, and testing quotations. Exact inventory and product photos remain business inputs; the spelling “Softix” needs confirmation before it is published as a vendor name.
+
+Run `node scripts/verify-catalogue.cjs` for functional checks with a fake email transport. With a local server running, add `--base-url http://localhost:3000` to verify public routes and sitemap entries.
+
 ---
 
 ## ⚠️ Before you launch
@@ -45,7 +53,7 @@ Enquiries are emailed via [Resend](https://resend.com). The code is done; it onl
 2. Create a key at https://resend.com/api-keys.
 3. `cp .env.example .env.local`, paste the key into `RESEND_API_KEY`, restart `npm run dev`.
 
-**Without the key:** in development the enquiry is printed to the terminal and the form reports success, so the UI is testable. In production the request returns 500 rather than pretending a lead was delivered.
+**Without the key:** in development the enquiry is printed to the terminal and the form states that no email was sent, so the UI is testable. In production the request returns 500 rather than pretending a lead was delivered.
 
 Resend's default sender (`onboarding@resend.dev`) needs no domain but can **only** deliver to the address that owns the Resend account. To mail anywhere else, verify a domain at https://resend.com/domains and set `CONTACT_FROM_EMAIL`.
 

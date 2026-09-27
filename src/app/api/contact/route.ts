@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 
 import { check, clientIp, type RateLimitRule } from '@/lib/rateLimit';
 import { contact, serviceOptions } from '@/lib/site';
+import { parseEnquirySelection, resolveEnquiry } from '@/lib/enquiry';
 
 /**
  * Contact form endpoint - validates the enquiry, rate limits it, and emails it
@@ -16,7 +17,7 @@ import { contact, serviceOptions } from '@/lib/site';
  *                      Point this at your own verified domain before launch.
  *
  * Without RESEND_API_KEY: in development the enquiry is logged to the terminal
- * and reported as delivered so the UI can be exercised; in production the
+ * and reported as logged locally so the UI can be exercised; in production the
  * request fails loudly rather than silently swallowing a real lead.
  */
 
@@ -30,6 +31,7 @@ interface Payload {
   phone?: string;
   service?: string;
   message?: string;
+  context?: unknown;
   /** Honeypot - see below. Real users never see this field. */
   website?: string;
 }
@@ -44,6 +46,7 @@ const MAX: Record<string, number> = {
   phone: 40,
   service: 40,
   message: 5000,
+  website: 200,
 };
 
 /**
@@ -100,6 +103,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: 'Malformed request body.' }, { status: 400 });
   }
 
+  if (!body || typeof body !== 'object' || Array.isArray(body) ||
+      Object.keys(MAX).some((field) => body[field as keyof Payload] !== undefined && typeof body[field as keyof Payload] !== 'string')) {
+    return NextResponse.json({ ok: false, error: 'Please send text values for the enquiry fields.' }, { status: 400 });
+  }
+
   /*
    * Honeypot: a field hidden from real users but visible to naive bots that
    * fill every input they find. Anything that fills it gets a success response
@@ -117,7 +125,13 @@ export async function POST(request: Request) {
   if (!body.email?.trim()) errors.email = 'Required.';
   else if (!EMAIL.test(body.email.trim())) errors.email = 'Enter a valid email address.';
   if (!body.service?.trim()) errors.service = 'Required.';
+  else if (!serviceOptions.some((option) => option.value === body.service?.trim())) errors.service = 'Select a valid service.';
   if (!body.message?.trim()) errors.message = 'Required.';
+  else if (body.message.trim().length < 10) errors.message = 'Please add a little more detail.';
+
+  const selection = body.context === undefined ? null : parseEnquirySelection(body.context);
+  const context = selection ? resolveEnquiry(selection) : null;
+  if (body.context !== undefined && !context) errors.context = 'The selected offering is not recognised. Please select it again.';
 
   for (const [field, max] of Object.entries(MAX)) {
     const value = body[field as keyof Payload];
@@ -137,10 +151,11 @@ export async function POST(request: Request) {
     phone: body.phone?.trim() || null,
     service: serviceLabel(body.service!.trim()),
     message: body.message!.trim(),
+    context,
     at: new Date().toISOString(),
   };
 
-  const subject = headerSafe(`New enquiry: ${enquiry.service} - ${enquiry.company}`);
+  const subject = headerSafe(`New enquiry: ${context?.label ?? enquiry.service} - ${enquiry.company}`);
 
   const text = [
     `Name:    ${enquiry.name}`,
@@ -148,6 +163,7 @@ export async function POST(request: Request) {
     `Email:   ${enquiry.email}`,
     `Phone:   ${enquiry.phone ?? '-'}`,
     `Service: ${enquiry.service}`,
+    ...(context ? [`Selection: ${context.label}`, `Catalogue page: ${context.href}`, `Selection IDs: ${JSON.stringify(context.selection)}`] : []),
     '',
     enquiry.message,
     '',
@@ -163,6 +179,7 @@ export async function POST(request: Request) {
         <tr><td style="padding:4px 16px 4px 0;color:#4A5C53">Email</td><td><a href="mailto:${esc(enquiry.email)}">${esc(enquiry.email)}</a></td></tr>
         <tr><td style="padding:4px 16px 4px 0;color:#4A5C53">Phone</td><td>${enquiry.phone ? `<a href="tel:${esc(enquiry.phone)}">${esc(enquiry.phone)}</a>` : '-'}</td></tr>
         <tr><td style="padding:4px 16px 4px 0;color:#4A5C53">Service</td><td>${esc(enquiry.service)}</td></tr>
+        ${context ? `<tr><td style="padding:4px 16px 4px 0;color:#4A5C53">Selection</td><td>${esc(context.label)}</td></tr><tr><td style="padding:4px 16px 4px 0;color:#4A5C53">Catalogue page</td><td>${esc(context.href)}</td></tr>` : ''}
       </table>
       <p style="margin:20px 0 6px;color:#4A5C53;font-size:13px">Message</p>
       <div style="white-space:pre-wrap;border-left:3px solid #3FA679;padding:8px 0 8px 14px;font-size:14px">${esc(enquiry.message)}</div>

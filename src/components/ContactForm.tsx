@@ -8,6 +8,7 @@ import Icon from '@/components/Icon';
 import { EASE_OUT } from '@/lib/motion';
 import { cn } from '@/lib/cn';
 import { serviceOptions } from '@/lib/site';
+import type { EnquiryContext } from '@/lib/enquiry';
 
 type Field = 'name' | 'company' | 'email' | 'phone' | 'service' | 'message';
 type Errors = Partial<Record<Field, string>>;
@@ -88,8 +89,11 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-export default function ContactForm() {
-  const [values, setValues] = useState<Record<Field, string>>(empty);
+export default function ContactForm({ initialContext = null }: { initialContext?: EnquiryContext | null }) {
+  const [context, setContext] = useState(initialContext);
+  const initialValues = { ...empty, service: initialContext?.service ?? '', message: initialContext?.message ?? '' };
+  const [values, setValues] = useState<Record<Field, string>>(initialValues);
+  const [delivered, setDelivered] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
   /** Server-supplied failure text, e.g. the rate-limit message. */
@@ -133,17 +137,28 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...values, website: trap }),
+        body: JSON.stringify({ ...values, website: trap, ...(context ? { context: context.selection } : {}) }),
       });
 
       if (res.ok) {
+        const data = await res.json();
+        setDelivered(data.delivered !== false);
         setStatus('sent');
         return;
       }
 
       /* Prefer the server's wording - it explains a rate limit far better. */
       const data = await res.json().catch(() => null);
-      setFailure(typeof data?.error === 'string' ? data.error : null);
+      if (data?.errors && typeof data.errors === 'object') {
+        const fieldErrors: Errors = {};
+        (Object.keys(empty) as Field[]).forEach((field) => {
+          if (typeof data.errors[field] === 'string') fieldErrors[field] = data.errors[field];
+        });
+        setErrors(fieldErrors);
+        const field = (Object.keys(fieldErrors) as Field[])[0];
+        if (field) formRef.current?.querySelector<HTMLElement>(`[name="${field}"]`)?.focus();
+      }
+      setFailure(typeof data?.error === 'string' ? data.error : typeof data?.errors?.context === 'string' ? data.errors.context : null);
       setStatus('failed');
     } catch {
       setStatus('failed');
@@ -162,14 +177,15 @@ export default function ContactForm() {
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-signal/12">
           <Icon name="CheckCircle2" size={24} className="text-signal-deep" />
         </span>
-        <h3 className="mt-5 font-display text-xl font-semibold text-pine">Enquiry received</h3>
+        <h3 className="mt-5 font-display text-xl font-semibold text-pine">{delivered ? 'Enquiry received' : 'Development enquiry recorded'}</h3>
         <p className="mx-auto mt-2 max-w-sm text-[0.9375rem] leading-relaxed text-ink-soft">
-          Thanks, we have your details. Someone from the team will get back to you.
+          {delivered ? 'Thanks, we have your details. Someone from the team will get back to you.' : 'The enquiry was logged locally. No email was sent.'}
         </p>
         <button
           type="button"
           onClick={() => {
-            setValues(empty);
+            setValues(initialValues);
+            setContext(initialContext);
             setErrors({});
             setFailure(null);
             setStatus('idle');
@@ -189,6 +205,17 @@ export default function ContactForm() {
       noValidate
       className="relative rounded-card border border-line bg-white p-6 shadow-card sm:p-8"
     >
+      {context && (
+        <div className="mb-6 rounded-control border border-line bg-mist p-4">
+          <p className="eyebrow">Your enquiry</p>
+          <p className="mt-2 font-display font-semibold text-pine">{context.label}</p>
+          <p className="mt-1 text-sm text-ink-soft">This selection will be included with your message.</p>
+          <button type="button" className="mt-2 min-h-[44px] text-sm font-medium text-pine underline underline-offset-4" onClick={() => {
+            setContext(null);
+            setValues((current) => ({ ...current, message: current.message === context.message ? '' : current.message }));
+          }}>Remove selection</button>
+        </div>
+      )}
       <p className="mb-6 text-[0.8125rem] text-ink-soft">
         Fields marked <span className="text-signal-deep">*</span> are required.
       </p>
